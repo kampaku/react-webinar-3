@@ -26,3 +26,14 @@ export function createElement(name, props = {}, ...children) {
 
   return element;
 }
+
+
+function codeGenerator() {
+  let value = 0;
+
+  return () => {
+    return value += 1;
+  }
+}
+
+export const generator = codeGenerator();
