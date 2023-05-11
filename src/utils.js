@@ -37,3 +37,15 @@ function codeGenerator() {
 }
 
 export const generator = codeGenerator();
+
+/**
+ * Склонение слов
+ * @param num {Number} Количество
+ * @param forms {[string, string, string]} Формы слов [один, несколько, много]
+ * @returns {string}
+ */
+export function pluralize(num, forms) {
+  const pr = new Intl.PluralRules("ru");
+  const currentForm = new Map([['one', forms[0]], ['few', forms[1]], ['many', forms[2]]]);
+  return currentForm.get(pr.select(num));
+}
