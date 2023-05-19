@@ -1,0 +1,10 @@
+.Cart {
+  display: flex;
+  align-items: center;
+  padding: 20px 0;
+  justify-content: flex-end;
+}
+
+.Cart-action {
+  padding: 20px 20px 20px 10px;
+}
