@@ -38,13 +38,17 @@ function App({store}) {
 
     onRemoveFromCart: useCallback((code) => {
       store.removeFromCart(code)
-    }, [store])
+    }, [store]),
+
+    onOpenModal: useCallback(() => {
+      cartModal.current.showModal();
+    }, [])
   }
   return (
     <>
     <PageLayout>
       <Head title='Приложение на чистом JS'/>
-      <Cart cart={cart} openModal={() => cartModal.current.showModal()}/>
+      <Cart cart={cart} openModal={callbacks.onOpenModal}/>
       <List list={list} onBtnClick={callbacks.onAddToCart}/>
     </PageLayout>
     <Modal modalRef={cartModal} title={'Корзина'}
