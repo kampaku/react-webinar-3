@@ -47,7 +47,7 @@ function App({store}) {
   return (
     <>
     <PageLayout>
-      <Head title='Приложение на чистом JS'/>
+      <Head title='Магазин'/>
       <Cart cart={cart} openModal={callbacks.onOpenModal}/>
       <List list={list} onBtnClick={callbacks.onAddToCart}/>
     </PageLayout>
