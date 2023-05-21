@@ -88,7 +88,9 @@ class Store {
     let items = [...this.state.cart.items];
     let itemIdx = this.state.cart.items.findIndex(item => item.code === code);
     if (itemIdx !== -1) {
-      items[itemIdx] = {...items[itemIdx], amount: items[itemIdx].amount+=1};
+      items = items.map((item, i) => (
+        i === itemIdx ? {...item, amount: item.amount + 1} : item
+      ));
     } else {
       const item = this.state.list.find(item => item.code === code);
       items.push({...item, amount: 1});
