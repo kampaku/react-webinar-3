@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import List from '../list';
 import './style.css';
 
@@ -16,4 +17,10 @@ function ModalCart({ cart, onDelete }) {
     </div>
   );
 }
+
+ModalCart.propTypes = {
+  cart: PropTypes.object,
+  onDelete: PropTypes.func
+}
+
 export default ModalCart;
