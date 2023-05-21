@@ -100,7 +100,8 @@ class Store {
       ...this.state,
       cart: {
         items: [...items],
-        totalPrice
+        totalPrice,
+        length: items.length
       }
     });
   }
@@ -113,7 +114,8 @@ class Store {
       ...this.state,
       cart: {
         items: [...items],
-        totalPrice
+        totalPrice,
+        length: items.length
       },
     });
   }

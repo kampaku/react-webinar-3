@@ -53,9 +53,7 @@ function App({store}) {
     </PageLayout>
     <Modal modalRef={cartModal} title={'Корзина'}
       modalBody={() => (
-        <div>
-          <ModalCart cart={cart} onDelete={callbacks.onRemoveFromCart}/>
-        </div>
+        <ModalCart cart={cart} onDelete={callbacks.onRemoveFromCart}/>
       )}/>
     </>
   );
