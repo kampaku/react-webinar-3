@@ -12,16 +12,15 @@ function Item(props){
   }
 
   return (
-    <div className={'Item' + (props.item.selected ? ' Item_selected' : '')}>
+    <div className={'Item'}>
       <div className='Item-code'>{props.item.code}</div>
       <div className='Item-title'>
         {props.item.title}
       </div>
       <div className='Item-price'>{props.item.price.toLocaleString()}&nbsp;₽</div>
-      {props.render && <div className='Item-count'>{props.render(props.item.code)}</div>}
       <div className='Item-actions'>
         <button onClick={callbacks.onBtnClick}>
-          {props.buttonText}
+          Добавить
         </button>
       </div>
     </div>
@@ -35,13 +34,10 @@ Item.propTypes = {
     price: PropTypes.number,
   }).isRequired,
   onBtnClick: PropTypes.func,
-  buttonText: PropTypes.string,
-  render: PropTypes.func
 };
 
 Item.defaultProps = {
   onBtnClick: () => {},
-  buttonText: 'добавить'
 }
 
 export default React.memo(Item);

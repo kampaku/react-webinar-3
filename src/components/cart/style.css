@@ -1,7 +1,6 @@
 .Cart {
   display: flex;
   align-items: center;
-  padding: 20px 0;
   justify-content: flex-end;
 }
 

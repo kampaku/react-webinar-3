@@ -6,6 +6,7 @@ import PageLayout from "./components/page-layout";
 import Cart from './components/cart';
 import Modal from './components/modal';
 import ModalCart from './components/modal-cart';
+import Item from './components/item';
 
 /**
  * Приложение
@@ -14,10 +15,8 @@ import ModalCart from './components/modal-cart';
  */
 function App({store}) {
   const cartModal = useRef()
-  const [isOpen, setIsOpen] = useState(false)
 
-  const list = store.getState().list;
-  const cart = store.getState().cart
+  const {cart, list} = store.getState();
 
   const callbacks = {
     onDeleteItem: useCallback((code) => {
@@ -48,8 +47,10 @@ function App({store}) {
     <>
     <PageLayout>
       <Head title='Магазин'/>
-      <Cart cart={cart} openModal={callbacks.onOpenModal}/>
-      <List list={list} onBtnClick={callbacks.onAddToCart}/>
+      <Cart length={cart.length} totalPrice={cart.totalPrice} openModal={callbacks.onOpenModal}/>
+      <List list={list} renderItem={(item) => (
+        <Item item={item} onBtnClick={callbacks.onAddToCart} key={item.code}/>
+      )}/>
     </PageLayout>
     <Modal modalRef={cartModal} title={'Корзина'}
       modalBody={() => (

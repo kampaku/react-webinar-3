@@ -11,16 +11,16 @@ const variants = {
   many: 'товаров',
 }
 
-function Cart({ cart, openModal }) {
+function Cart({ length, totalPrice, openModal }) {
   const cn = bem('Cart');
 
   return (
     <div className={cn()}>
       В корзине:&nbsp;
       <b>
-        {cart.items.length === 0
+        {length === 0
           ? 'пусто'
-          : `${cart.length} ${plural(cart.length, variants)} / ${cart.totalPrice.toLocaleString()} ₽`}
+          : `${length} ${plural(length, variants)} / ${totalPrice.toLocaleString()} ₽`}
       </b>
       <div className={cn('action')}>
         <button onClick={openModal} className={cn('button')}>
@@ -32,7 +32,8 @@ function Cart({ cart, openModal }) {
 }
 
 Cart.propTypes = {
-  cart: PropTypes.object,
+  length: PropTypes.number,
+  totalPrice: PropTypes.number,
   openModal: PropTypes.func.isRequired,
 };
 
