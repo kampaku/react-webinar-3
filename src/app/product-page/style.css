@@ -1,0 +1,10 @@
+.ProductPage {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 0 40px;
+  align-items: flex-start;
+  font-size: 18px;
+  line-height: 21px;
+}
+

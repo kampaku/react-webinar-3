@@ -3,6 +3,9 @@ import Main from "./main";
 import Basket from "./basket";
 import useStore from "../store/use-store";
 import useSelector from "../store/use-selector";
+import { Route, Routes } from 'react-router-dom';
+import ProductPage from './product-page';
+import Layout from './Layout';
 
 /**
  * Приложение
@@ -14,7 +17,12 @@ function App() {
 
   return (
     <>
-      <Main/>
+      <Routes>
+        <Route path='/' element={<Layout/>}>
+          <Route index element={<Main/>}/>
+          <Route path='/product/:id' element={<ProductPage/>}/>
+        </Route>
+      </Routes>
       {activeModal === 'basket' && <Basket/>}
     </>
   );
