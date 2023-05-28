@@ -1,25 +1,30 @@
-import {useCallback, useEffect} from 'react';
+import {useCallback, useEffect, memo} from 'react';
 import {useParams} from 'react-router-dom';
 import {cn as bem} from '@bem-react/classname';
 
 import useStore from "../../store/use-store";
 import useSelector from "../../store/use-selector";
+import ProductInfo from '../../components/product-info';
 import './style.css';
 
 function ProductPage() {
-  const cn = bem('ProductPage');
+  const cn = bem('Product-Page');
   const {id} = useParams();
 
   const store = useStore();
 
   const select = useSelector(state => ({
-    id: state.product._id,
-    name: state.product.name,
-    madeIn: state.product.madeIn,
-    description: state.product.description,
-    category: state.product.category,
-    edition: state.product.edition,
-    price: state.product.price,
+    product: {
+      id: state.product.info?.id,
+      name: state.product.info?.name,
+      madeIn: state.product.info?.madeIn,
+      description: state.product.info?.description,
+      category: state.product.info?.category,
+      edition: state.product.info?.edition,
+      price: state.product.info?.price,
+    },
+    loading: state.product.loading,
+    error: state.product.error
   }));
 
   const callbacks = {
@@ -28,20 +33,16 @@ function ProductPage() {
 
   useEffect(() => {
     store.actions.product.load(id);
-
-    return () => store.actions.product.initState()
+    return () => store.actions.product.reset();
   }, [id]);
 
   return (
     <div className={cn()}>
-      <span>{select.description}</span>
-      <span>Страна производитель: <b>{select.madeIn}</b></span>
-      <span>Категория: <b>{select.category}</b></span>
-      <span>Год выпуска: <b>{select.edition}</b></span>
-      <b>Цена: {select.price} ₽</b>
-      <button onClick={callbacks.addToBasket}>Добавить</button>
+      {!select.loading &&
+        <ProductInfo product={select.product} onAddToBasket={callbacks.addToBasket}/>
+      }
     </div>
   )
 }
 
-export default ProductPage;
+export default memo(ProductPage);

@@ -28,7 +28,7 @@ function Pagination({ totalCount, perPage, currentPage, onChangePage }) {
   );
 }
 
-Pagination.prototype = {
+Pagination.propTypes = {
   totalCount: PropTypes.number,
   perPage: PropTypes.number,
   currentPage: PropTypes.number,
