@@ -7,7 +7,6 @@ function usePagination({totalCount, perPage, currentPage}) {
   const pageList = useMemo(() => {
     const pagesCount = Math.ceil(totalCount / perPage);
     const maxInRow = 5;
-    const siblingCount = 1;
     const pages = [];
 
     if (pagesCount <= maxInRow) {

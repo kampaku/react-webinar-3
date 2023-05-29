@@ -1,17 +1,36 @@
+import {useCallback} from 'react'
 import PropTypes from 'prop-types';
+import useSelector from "../../store/use-selector";
 import BasketTool from "../basket-tool";
 import Nav from "../nav";
+import useStore from "../../store/use-store";
+import useLang from '../../i18n/use-lang';
 import 'styles.css';
 
-function Menu({ onOpen, sum, amount, translate }) {
+function Menu() {
+
+  const store = useStore();
+
+  const {t} = useLang()
+
+  const select = useSelector(state => ({
+    amount: state.basket.amount,
+    sum: state.basket.sum,
+  }));
+
+  const callbacks = {
+    // Добавление в корзину
+    addToBasket: useCallback(_id => store.actions.basket.addToBasket(_id), [store]),
+    openModalBasket: useCallback(() => store.actions.modals.open('basket'), [store]),
+  }
   return (
     <div className='Menu'>
-      <Nav />
+      <Nav translate={t}/>
       <BasketTool
-        onOpen={onOpen}
-        sum={sum}
-        amount={amount}
-        translate={translate}
+        onOpen={callbacks.openModalBasket}
+        sum={select.sum}
+        amount={select.amount}
+        translate={t}
       />
     </div>
   );

@@ -13,7 +13,7 @@ import Menu from '../../components/menu';
 function Main() {
 
   const store = useStore();
-  const {t} = useLang();
+  const {t, lang} = useLang();
 
   const select = useSelector(state => ({
     list: state.catalog.list,
@@ -34,7 +34,7 @@ function Main() {
   const renders = {
     item: useCallback((item) => {
       return <Item item={item} onAdd={callbacks.addToBasket} translate={t}/>
-    }, [callbacks.addToBasket]),
+    }, [callbacks.addToBasket, lang]),
   };
 
   useEffect(() => {
@@ -46,7 +46,6 @@ function Main() {
       <Head title={t('store') ?? 'Магазин'}/>
       <Menu onOpen={callbacks.openModalBasket} amount={select.amount}
         sum={select.sum} translate={t}/>
-      {/* <BasketTool /> */}
       <List list={select.list} renderItem={renders.item}/>
       {select.list.length > 0 &&
         <Pagination onChangePage={callbacks.changePage} currentPage={select.page} perPage={select.limit} totalCount={select.itemsCount} />

@@ -3,17 +3,17 @@ import PropTypes from "prop-types";
 import {cn as bem} from '@bem-react/classname';
 import './style.css';
 
-function ProductInfo({product, onAddToBasket}) {
+function ProductInfo({product, onAddToBasket, translate}) {
   const cn = bem('Product-Info');
 
   return (
     <div className={cn()}>
       <span>{product.description}</span>
-      <span>Страна производитель: <b>{product.madeIn}</b></span>
-      <span>Категория: <b>{product.category}</b></span>
-      <span>Год выпуска: <b>{product.edition}</b></span>
-      <span className={cn('price')}>Цена: {product.price} ₽</span>
-      <button onClick={onAddToBasket}>Добавить</button>
+      <span>{translate('manufacture') ?? 'Страна производитель:'} <b>{product.madeIn}</b></span>
+      <span>{translate('category') ?? 'Категория:'} <b>{product.category}</b></span>
+      <span>{translate('edition') ?? 'Год выпуска:'} <b>{product.edition}</b></span>
+      <span className={cn('price')}>{translate('price') ?? 'Цена:'} {product.price} ₽</span>
+      <button onClick={onAddToBasket}>{translate('add') ?? 'Добавить'}</button>
     </div>
   )
 }
@@ -26,6 +26,12 @@ ProductInfo.propTypes = {
     edition: PropTypes.number,
     price: PropTypes.number
   }),
-  onAddToBasket: PropTypes.func
+  onAddToBasket: PropTypes.func,
+  translate: PropTypes.func,
 }
+
+ProductInfo.defaultProps = {
+  translate: () => null
+}
+
 export default memo(ProductInfo);

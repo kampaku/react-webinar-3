@@ -7,9 +7,12 @@ import BasketTool from "../../components/basket-tool";
 import useStore from "../../store/use-store";
 import useSelector from "../../store/use-selector";
 import ProductInfo from "../../components/product-info";
+import useLang from '../../i18n/use-lang';
+import Menu from '../../components/menu';
 
 function ProductPage() {
   const { id } = useParams();
+  const { t } = useLang();
 
   const store = useStore();
 
@@ -42,15 +45,12 @@ function ProductPage() {
   return (
     <PageLayout>
       <Head title={select.product?.name} />
-      <BasketTool
-        onOpen={callbacks.openModalBasket}
-        amount={select.amount}
-        sum={select.sum}
-      />
+      <Menu />
       {!select.loading && (
         <ProductInfo
           product={select.product}
           onAddToBasket={callbacks.addToBasket}
+          translate={t}
         />
       )}
     </PageLayout>
