@@ -1,12 +1,12 @@
 import { memo } from "react";
 import PropTypes from "prop-types";
 import { cn as bem } from "@bem-react/classname";
-import usePagination from "./use-pagination";
+import createPageList from "./create-pages";
 import "./style.css";
 
-function Pagination({ totalCount, perPage, currentPage, onChangePage }) {
+function Pagination({ currentPage, onChangePage, pagesCount }) {
   const cn = bem("Pagination");
-  const pageList = usePagination({ totalCount, perPage, currentPage });
+  const pageList = createPageList({ currentPage, pagesCount });
 
   return (
     <div className={cn()}>
@@ -29,10 +29,15 @@ function Pagination({ totalCount, perPage, currentPage, onChangePage }) {
 }
 
 Pagination.propTypes = {
-  totalCount: PropTypes.number,
-  perPage: PropTypes.number,
+  pagesCount: PropTypes.number,
   currentPage: PropTypes.number,
   onChangePage: PropTypes.func
+}
+
+Pagination.defaultProps = {
+  pagesCount: 1,
+  currentPage: 1,
+  onChangePage: () => {}
 }
 
 export default memo(Pagination);
