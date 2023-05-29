@@ -1,19 +1,19 @@
-import {useCallback, useEffect, memo} from 'react';
-import {useParams} from 'react-router-dom';
-import {cn as bem} from '@bem-react/classname';
+import { useCallback, useEffect, memo } from "react";
+import { useParams } from "react-router-dom";
 
+import PageLayout from "../../components/page-layout";
+import Head from "../../components/head";
+import BasketTool from "../../components/basket-tool";
 import useStore from "../../store/use-store";
 import useSelector from "../../store/use-selector";
-import ProductInfo from '../../components/product-info';
-import './style.css';
+import ProductInfo from "../../components/product-info";
 
 function ProductPage() {
-  const cn = bem('Product-Page');
-  const {id} = useParams();
+  const { id } = useParams();
 
   const store = useStore();
 
-  const select = useSelector(state => ({
+  const select = useSelector((state) => ({
     product: {
       id: state.product.info?.id,
       name: state.product.info?.name,
@@ -24,12 +24,15 @@ function ProductPage() {
       price: state.product.info?.price,
     },
     loading: state.product.loading,
-    error: state.product.error
+    error: state.product.error,
   }));
 
   const callbacks = {
-    addToBasket: useCallback(() => store.actions.basket.addToBasket(id), [store]),
-  }
+    addToBasket: useCallback(
+      () => store.actions.basket.addToBasket(id),
+      [store]
+    ),
+  };
 
   useEffect(() => {
     store.actions.product.load(id);
@@ -37,12 +40,21 @@ function ProductPage() {
   }, [id]);
 
   return (
-    <div className={cn()}>
-      {!select.loading &&
-        <ProductInfo product={select.product} onAddToBasket={callbacks.addToBasket}/>
-      }
-    </div>
-  )
+    <PageLayout>
+      <Head title={select.product?.name} />
+      <BasketTool
+        onOpen={callbacks.openModalBasket}
+        amount={select.amount}
+        sum={select.sum}
+      />
+      {!select.loading && (
+        <ProductInfo
+          product={select.product}
+          onAddToBasket={callbacks.addToBasket}
+        />
+      )}
+    </PageLayout>
+  );
 }
 
 export default memo(ProductPage);

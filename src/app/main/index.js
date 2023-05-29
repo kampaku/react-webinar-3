@@ -7,27 +7,33 @@ import List from "../../components/list";
 import useStore from "../../store/use-store";
 import useSelector from "../../store/use-selector";
 import Pagination from '../../components/pagination';
+import useLang from '../../i18n/use-lang';
+import Menu from '../../components/menu';
 
 function Main() {
 
   const store = useStore();
+  const {t} = useLang();
 
   const select = useSelector(state => ({
     list: state.catalog.list,
     itemsCount: state.catalog.itemsCount,
     page: state.catalog.page,
     limit: state.catalog.limit,
+    amount: state.basket.amount,
+    sum: state.basket.sum,
   }));
 
   const callbacks = {
     // Добавление в корзину
     addToBasket: useCallback(_id => store.actions.basket.addToBasket(_id), [store]),
     changePage: useCallback((page) => store.actions.catalog.changePage(page), [store]),
+    openModalBasket: useCallback(() => store.actions.modals.open('basket'), [store]),
   }
 
   const renders = {
     item: useCallback((item) => {
-      return <Item item={item} onAdd={callbacks.addToBasket}/>
+      return <Item item={item} onAdd={callbacks.addToBasket} translate={t}/>
     }, [callbacks.addToBasket]),
   };
 
@@ -36,12 +42,16 @@ function Main() {
   }, [select.page]);
 
   return (
-    <>
+    <PageLayout>
+      <Head title={t('store') ?? 'Магазин'}/>
+      <Menu onOpen={callbacks.openModalBasket} amount={select.amount}
+        sum={select.sum} translate={t}/>
+      {/* <BasketTool /> */}
       <List list={select.list} renderItem={renders.item}/>
       {select.list.length > 0 &&
         <Pagination onChangePage={callbacks.changePage} currentPage={select.page} perPage={select.limit} totalCount={select.itemsCount} />
       }
-    </>
+    </PageLayout>
   );
 }
 
