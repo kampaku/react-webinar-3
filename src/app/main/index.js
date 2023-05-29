@@ -22,7 +22,7 @@ function Main() {
     pagesCount: state.catalog.pagesCount,
     loading: state.catalog.loading,
   }));
-  const paramsPage = params.get("page");
+  const paramsPage = params.get("page") || 1;
   const page =
     paramsPage > select.pagesCount ? select.page : paramsPage || select.page;
 
@@ -48,15 +48,14 @@ function Main() {
   }, [page]);
 
   return (
-    <PageLayout>
+    <PageLayout footer={select.list.length > 0 && !select.loading && (
+      <Pagination currentPage={select.page} pagesCount={select.pagesCount} />
+    )}>
       <Head title={t("store") ?? "Магазин"} />
       <Menu />
       <WithLoader isLoading={select.loading}>
         <List list={select.list} renderItem={renders.item} />
       </WithLoader>
-      {select.list.length > 0 && !select.loading && (
-        <Pagination currentPage={select.page} pagesCount={select.pagesCount} />
-      )}
     </PageLayout>
   );
 }
