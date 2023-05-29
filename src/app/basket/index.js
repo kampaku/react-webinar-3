@@ -32,7 +32,7 @@ function Basket() {
   };
 
   return (
-    <ModalLayout title={t('cart')} onClose={callbacks.closeModal}>
+    <ModalLayout title={t('cart')} onClose={callbacks.closeModal} closeText={t('close')}>
       <List list={select.list} renderItem={renders.itemBasket}/>
       <BasketTotal sum={select.sum} translate={t}/>
     </ModalLayout>
