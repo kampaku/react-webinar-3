@@ -9,6 +9,7 @@ import useSelector from "../../store/use-selector";
 import ProductInfo from "../../components/product-info";
 import useLang from '../../i18n/use-lang';
 import Menu from '../../components/menu';
+import WithLoader from '../../components/with-loader';
 
 function ProductPage() {
   const { id } = useParams();
@@ -46,13 +47,13 @@ function ProductPage() {
     <PageLayout>
       <Head title={select.product?.name} />
       <Menu />
-      {!select.loading && (
-        <ProductInfo
-          product={select.product}
-          onAddToBasket={callbacks.addToBasket}
-          translate={t}
-        />
-      )}
+        <WithLoader isLoading={select.loading}>
+          <ProductInfo
+            product={select.product}
+            onAddToBasket={callbacks.addToBasket}
+            translate={t}
+          />
+        </WithLoader>
     </PageLayout>
   );
 }

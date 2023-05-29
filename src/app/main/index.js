@@ -9,6 +9,7 @@ import useSelector from "../../store/use-selector";
 import Pagination from "../../components/pagination";
 import useLang from "../../i18n/use-lang";
 import Menu from "../../components/menu";
+import WithLoader from '../../components/with-loader';
 
 function Main() {
   const store = useStore();
@@ -19,6 +20,7 @@ function Main() {
     list: state.catalog.list,
     page: state.catalog.page,
     pagesCount: state.catalog.pagesCount,
+    loading: state.catalog.loading,
   }));
   const paramsPage = params.get("page");
   const page =
@@ -49,8 +51,10 @@ function Main() {
     <PageLayout>
       <Head title={t("store") ?? "Магазин"} />
       <Menu />
-      <List list={select.list} renderItem={renders.item} />
-      {select.list.length > 0 && (
+      <WithLoader isLoading={select.loading}>
+        <List list={select.list} renderItem={renders.item} />
+      </WithLoader>
+      {select.list.length > 0 && !select.loading && (
         <Pagination currentPage={select.page} pagesCount={select.pagesCount} />
       )}
     </PageLayout>
