@@ -1,8 +1,8 @@
 import { memo, useCallback, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import Item from "../../components/item";
 import PageLayout from "../../components/page-layout";
 import Head from "../../components/head";
-import BasketTool from "../../components/basket-tool";
 import List from "../../components/list";
 import useStore from "../../store/use-store";
 import useSelector from "../../store/use-selector";
@@ -13,21 +13,21 @@ import Menu from "../../components/menu";
 function Main() {
   const store = useStore();
   const { t, lang } = useLang();
+  const [params] = useSearchParams();
 
   const select = useSelector((state) => ({
     list: state.catalog.list,
     page: state.catalog.page,
     pagesCount: state.catalog.pagesCount,
   }));
+  const paramsPage = params.get("page");
+  const page =
+    paramsPage > select.pagesCount ? select.page : paramsPage || select.page;
 
   const callbacks = {
     // Добавление в корзину
     addToBasket: useCallback(
       (_id) => store.actions.basket.addToBasket(_id),
-      [store]
-    ),
-    changePage: useCallback(
-      (page) => store.actions.catalog.changePage(page),
       [store]
     ),
   };
@@ -42,8 +42,8 @@ function Main() {
   };
 
   useEffect(() => {
-    store.actions.catalog.load();
-  }, [select.page]);
+    store.actions.catalog.load(page);
+  }, [page]);
 
   return (
     <PageLayout>
@@ -51,11 +51,7 @@ function Main() {
       <Menu />
       <List list={select.list} renderItem={renders.item} />
       {select.list.length > 0 && (
-        <Pagination
-          onChangePage={callbacks.changePage}
-          currentPage={select.page}
-          pagesCount={select.pagesCount}
-        />
+        <Pagination currentPage={select.page} pagesCount={select.pagesCount} />
       )}
     </PageLayout>
   );

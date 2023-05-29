@@ -18,22 +18,16 @@ class Catalog extends StoreModule {
     }
   }
 
-  changePage(page) {
-    const limit = this.getState().limit;
-    this.setState({
-      ...this.getState(),
-      page,
-      skip: limit * page - limit
-    }, 'Поменялась страница');
-  }
-
-  async load() {
-    const response = await fetch(`/api/v1/articles?limit=${this.getState().limit}&skip=${this.getState().skip}&fields=items(_id, title, price),count`);
+  async load(page) {
+    page = +page;
+    const skip = this.getState().limit * page - this.getState().limit
+    const response = await fetch(`/api/v1/articles?limit=${this.getState().limit}&skip=${skip}&fields=items(_id, title, price),count`);
     const json = await response.json();
     const pagesCount = Math.ceil(json.result.count / this.getState().limit)
     this.setState({
        ...this.getState(),
        list: json.result.items,
+       page,
        pagesCount
     }, 'Загружены товары из АПИ');
   }

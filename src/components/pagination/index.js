@@ -3,8 +3,9 @@ import PropTypes from "prop-types";
 import { cn as bem } from "@bem-react/classname";
 import createPageList from "./create-pages";
 import "./style.css";
+import { Link } from 'react-router-dom';
 
-function Pagination({ currentPage, onChangePage, pagesCount }) {
+function Pagination({ currentPage, pagesCount }) {
   const cn = bem("Pagination");
   const pageList = createPageList({ currentPage, pagesCount });
 
@@ -15,13 +16,13 @@ function Pagination({ currentPage, onChangePage, pagesCount }) {
           return <span key={page + Math.random()}>{page}</span>;
         }
         return (
-          <button
+          <Link
+            to={{pathname: '/', search: `page=${page}`}}
             key={page}
             className={cn("button", { active: currentPage === page })}
-            onClick={() => onChangePage(page)}
           >
             {page}
-          </button>
+          </Link>
         );
       })}
     </div>
@@ -37,7 +38,6 @@ Pagination.propTypes = {
 Pagination.defaultProps = {
   pagesCount: 1,
   currentPage: 1,
-  onChangePage: () => {}
 }
 
 export default memo(Pagination);
