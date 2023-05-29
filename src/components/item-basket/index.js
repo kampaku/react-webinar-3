@@ -20,7 +20,7 @@ function ItemBasket(props) {
     <div className={cn()}>
       {/*<div className={cn('code')}>{props.item._id}</div>*/}
       <div className={cn('title')}>
-        <Link className={cn('link')} to={`product/${props.item._id}`} onClick={callbacks.closeModal}>
+        <Link className={cn('link')} to={`${props.path}/${props.item._id}`} onClick={callbacks.closeModal}>
           {props.item.title}
         </Link>
       </div>
@@ -40,12 +40,14 @@ ItemBasket.propTypes = {
     price: PropTypes.number,
     amount: PropTypes.number
   }).isRequired,
-  onRemove: propTypes.func,
-  translate: propTypes.func,
+  onRemove: PropTypes.func,
+  path: PropTypes.string,
+  translate: PropTypes.func,
 }
 
 ItemBasket.defaultProps = {
   onRemove: () => {},
+  path: 'product',
   translate: () => null
 }
 
