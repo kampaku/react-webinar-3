@@ -10,12 +10,17 @@ class User extends StoreModule {
       info: {},
       isLogin: token ? true : false,
       error: '',
-      token: token
+      token: token,
+      waiting: true
     };
   }
 
   async fetchInfo() {
     const token = this.getState().token;
+    this.setState({
+      ...this.getState(),
+      waiting: true
+    })
     if (!token) return;
     const res = await fetch("/api/v1/users/self", {
       method: "GET",
@@ -31,7 +36,8 @@ class User extends StoreModule {
       this.setState({
         ...this.getState(),
         info: {},
-        isLogin: false
+        isLogin: false,
+        waiting: false
       })
       return
     }
@@ -44,7 +50,8 @@ class User extends StoreModule {
         phone: json.result.profile.phone,
         email: json.result.email,
       },
-      isLogin: true
+      isLogin: true,
+      waiting: false
     })
   }
 

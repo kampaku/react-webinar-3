@@ -9,6 +9,7 @@ import useSelector from '../../hooks/use-selector';
 import UserBar from '../../containers/user-bar';
 import ProfileInfo from '../../components/profile-info';
 import { Navigate } from 'react-router';
+import Spinner from '../../components/spinner';
 
 function Profile() {
   const store = useStore()
@@ -20,7 +21,8 @@ function Profile() {
 
   const select = useSelector(state => ({
     user: state.user.info,
-    isLogin: state.user.isLogin
+    isLogin: state.user.isLogin,
+    wait: state.user.waiting
   }));
 
   if (select.isLogin === false) {
@@ -34,7 +36,9 @@ function Profile() {
         <LocaleSelect/>
       </Head>
       <Navigation />
-      <ProfileInfo user={select.user}/>
+      <Spinner active={select.wait}>
+        <ProfileInfo user={select.user}/>
+      </Spinner>
     </PageLayout>
   );
 }
