@@ -2,7 +2,6 @@ import { useNavigate } from "react-router";
 import SideLayout from "../../components/side-layout";
 import useSelector from "../../hooks/use-selector";
 import { Link } from "react-router-dom";
-import useInit from "../../hooks/use-init";
 import useStore from "../../hooks/use-store";
 import { useCallback } from "react";
 
@@ -17,10 +16,6 @@ function UserBar() {
   const callback = {
     logout: useCallback(() => store.actions.user.logout(), []),
   };
-
-  useInit(() => {
-    store.actions.user.fetchInfo();
-  }, []);
 
   if (select.isLogin === false) {
     return (

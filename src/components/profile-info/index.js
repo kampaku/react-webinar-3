@@ -16,4 +16,12 @@ function ProfileInfo({user}) {
   );
 }
 
+ProfileInfo.propTypes = {
+  user: PropTypes.shape({
+    name: PropTypes.string,
+    phone: PropTypes.string,
+    email: PropTypes.string,
+  }).isRequired
+}
+
 export default ProfileInfo;
