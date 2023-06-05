@@ -15,12 +15,12 @@ function LoginPage() {
   const {t} = useTranslate();
 
   const callbacks = {
-    login: useCallback((login, password) => store.actions.user.authorize(login, password), [])
+    login: useCallback((login, password) => store.actions.authorization.login(login, password), [])
   }
 
   const select = useSelector(state => ({
-    error: state.user.error,
-    isLogin: state.user.isLogin
+    error: state.authorization.error,
+    isLogin: state.authorization.isLogin
   }));
 
   const onSubmit = async (data) => {

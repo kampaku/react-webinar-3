@@ -8,6 +8,7 @@ import LoginPage from './login';
 import Profile from './profile';
 import useInit from '../hooks/use-init';
 import useStore from '../hooks/use-store';
+import PrivateRoute from '../containers/private-route';
 
 /**
  * Приложение
@@ -28,7 +29,7 @@ function App() {
         <Route path={''} element={<Main/>}/>
         <Route path={'/articles/:id'} element={<Article/>}/>
         <Route path={'/login'} element={<LoginPage/>}/>
-        <Route path={'/profile'} element={<Profile/>}/>
+        <Route path={'/profile'} element={<PrivateRoute><Profile/></PrivateRoute>}/>
       </Routes>
 
       {activeModal === 'basket' && <Basket/>}

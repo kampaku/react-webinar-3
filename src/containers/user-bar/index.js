@@ -9,12 +9,12 @@ function UserBar() {
   const store = useStore();
   const navigate = useNavigate();
   const select = useSelector((state) => ({
-    isLogin: state.user.isLogin,
+    isLogin: state.authorization.isLogin,
     user: state.user.info,
   }));
 
   const callback = {
-    logout: useCallback(() => store.actions.user.logout(), []),
+    logout: useCallback(() => store.actions.authorization.logout(), [store]),
   };
 
   if (select.isLogin === false) {
