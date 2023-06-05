@@ -6,6 +6,7 @@ import Select from "../../components/select";
 import Input from "../../components/input";
 import SideLayout from "../../components/side-layout";
 import useInit from '../../hooks/use-init';
+import { transformCategories } from '../../utils';
 
 function CatalogFilter() {
 
@@ -15,7 +16,7 @@ function CatalogFilter() {
     sort: state.catalog.params.sort,
     query: state.catalog.params.query,
     category: state.catalog.params.category,
-    categories: state.catalog.categories
+    categories: state.filterCategories.categories
   }));
 
   const callbacks = {
@@ -29,35 +30,6 @@ function CatalogFilter() {
     onCategory: useCallback((category) => store.actions.catalog.setParams({category, page: 1}), [store]),
   };
 
-  const categories = useMemo(() => {
-    const res = []
-
-    const normalize = (item) => {
-      let hyphen = '';
-      const stack = [item];
-      while (stack.length) {
-        const elem = stack.shift();
-        if (elem.parent) {
-          stack.push(select.categories.find(item => item._id === elem.parent._id))
-          hyphen += '-'
-        }
-      }
-      item = {...item, title: hyphen + item.title}
-      if(item.parent) {
-        let idx = res.findIndex(el => el._id === item.parent._id)
-        if (idx !== -1) {
-          res.splice(idx + 1, 0, item);
-        } else {
-          res.push(item)
-        }
-      } else {
-        res.push(item)
-      }
-    }
-    select.categories.forEach(item => normalize(item));
-    return res.map(item => ({value: item._id, title: item.title}))
-  }, [select.categories])
-
   const options = {
     sort: useMemo(() => ([
       {value: 'order', title: 'По порядку'},
@@ -67,12 +39,12 @@ function CatalogFilter() {
     ]), []),
     categories: useMemo(() => ([
       {value: '', title: 'Все'},
-      ...categories
-    ]), [categories])
+      ...transformCategories(select.categories)
+    ]), [select.categories])
   };
 
   useInit(() => {
-    store.actions.catalog.fetchCategories();
+    store.actions.filterCategories.fetchCategories();
   }, [])
 
   const {t} = useTranslate();
