@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
 import Head from '../../components/head';
 import LoginForm from '../../components/login-form';
 import PageLayout from '../../components/page-layout';
@@ -19,17 +19,12 @@ function LoginPage() {
   }
 
   const select = useSelector(state => ({
-    error: state.authorization.error,
     isLogin: state.authorization.isLogin
   }));
 
   const onSubmit = async (data) => {
-    callbacks.login(data.login, data.password)
+    return await callbacks.login(data.login, data.password)
   }
-
-  useEffect(() => {
-    return () => store.actions.authorization.resetError();
-  }, [])
 
   if(select.isLogin) {
     return <Navigate to={'/profile'} replace={true}/>

@@ -8,47 +8,42 @@ class Authorization extends StoreModule {
     return {
       token,
       isLogin: token ? true : false,
-      error: '',
+      user: {},
       waiting: false
     }
   }
 
-  resetError() {
+  async login(login, password) {
+    const res = await fetch("/api/v1/users/sign", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        login,
+        password,
+        "remember": true
+      }),
+    });
+    const json = await res.json();
+    if (json.error) {
+      return {
+        error: json.error.data.issues.map(e => e.message).join(' ')
+      }
+    }
+
+    localStorage.setItem('token', json.result.token)
     this.setState({
       ...this.getState(),
-      error: ''
-    })
-  }
-
-  async login(login, password) {
-    try {
-      const res = await fetch("/api/v1/users/sign", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          login,
-          password,
-          "remember": true
-        }),
-      });
-      const json = await res.json();
-      if (json.error) throw json.error.data.issues
-
-      localStorage.setItem('token', json.result.token)
-      this.setState({
-        ...this.getState(),
-        isLogin: true,
-        token: json.result.token,
-        waiting: false
-      }, 'логин')
-    } catch (error) {
-      console.log(error)
-      this.setState({
-        ...this.getState(),
-        error: error.map(e => e.message).join(' ')
-      })
+      isLogin: true,
+      token: json.result.token,
+      user: {
+        name: json.result.user.profile.name
+      },
+      waiting: false
+    }, 'логин')
+    return {
+      error: false
     }
   }
 
@@ -66,9 +61,40 @@ class Authorization extends StoreModule {
       this.setState({
         ...this.getState(),
         isLogin: false,
+        user: {},
         token: ''
       })
     }
+  }
+
+  async initSession() {
+    const token = this.getState().token
+    const res = await fetch("/api/v1/users/self?fields=profile(name)", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Token": token,
+      },
+    });
+
+    const json = await res.json();
+    if(json.error) {
+      localStorage.removeItem('token')
+      this.setState({
+        ...this.getState(),
+        info: {},
+        waiting: false
+      })
+      return
+    }
+
+    this.setState({
+      ...this.getState(),
+      user: {
+        name: json.result.profile.name,
+      },
+      waiting: false
+    })
   }
 }
 

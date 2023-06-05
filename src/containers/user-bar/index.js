@@ -10,7 +10,7 @@ function UserBar() {
   const navigate = useNavigate();
   const select = useSelector((state) => ({
     isLogin: state.authorization.isLogin,
-    user: state.user.info,
+    username: state.authorization.user.name,
   }));
 
   const callback = {
@@ -27,7 +27,7 @@ function UserBar() {
 
   return (
     <SideLayout padding="small" side="end">
-      <Link to={"/profile"}>{select.user.name}</Link>
+      <Link to={"/profile"}>{select.username}</Link>
       <button onClick={callback.logout}>Выход</button>
     </SideLayout>
   );

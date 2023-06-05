@@ -4,14 +4,16 @@ import PropTypes from "prop-types";
 import './style.css';
 import Input from '../input';
 
-function LoginForm({callback, error}) {
-  const [login, setLogin] = useState('')
-  const [password, setPassword] = useState('')
+function LoginForm({callback}) {
+  const [login, setLogin] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
   const cn = bem('Login-form');
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
-    callback({login, password});
+    const res = await callback({login, password});
+    if(res.error) setError(res.error)
   }
 
   return (

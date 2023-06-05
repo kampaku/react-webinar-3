@@ -20,7 +20,7 @@ function App() {
   const activeModal = useSelector(state => state.modals.name);
 
   useInit(() => {
-    store.actions.user.fetchInfo();
+    store.actions.authorization.initSession();
   }, []);
 
   return (
