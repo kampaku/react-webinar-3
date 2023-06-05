@@ -13,6 +13,13 @@ class Authorization extends StoreModule {
     }
   }
 
+  resetError() {
+    this.setState({
+      ...this.getState(),
+      error: ''
+    })
+  }
+
   async login(login, password) {
     try {
       const res = await fetch("/api/v1/users/sign", {

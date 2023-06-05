@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import Head from '../../components/head';
 import LoginForm from '../../components/login-form';
 import PageLayout from '../../components/page-layout';
@@ -11,11 +11,11 @@ import UserBar from '../../containers/user-bar';
 import { Navigate } from 'react-router';
 
 function LoginPage() {
-  const store = useStore()
+  const store = useStore();
   const {t} = useTranslate();
 
   const callbacks = {
-    login: useCallback((login, password) => store.actions.authorization.login(login, password), [])
+    login: useCallback((login, password) => store.actions.authorization.login(login, password), [store])
   }
 
   const select = useSelector(state => ({
@@ -26,6 +26,10 @@ function LoginPage() {
   const onSubmit = async (data) => {
     callbacks.login(data.login, data.password)
   }
+
+  useEffect(() => {
+    return () => store.actions.authorization.resetError();
+  }, [])
 
   if(select.isLogin) {
     return <Navigate to={'/profile'} replace={true}/>
