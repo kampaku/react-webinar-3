@@ -21,6 +21,10 @@
   grid-area: username;
 }
 
+.Comment-username_active {
+  color: #666666;
+}
+
 .Comment-date {
   font-size: 12px;
   line-height: 14px;

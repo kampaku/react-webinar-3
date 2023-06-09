@@ -6,7 +6,7 @@ import Comment from "../comment";
 import "./style.css";
 import Answer from "../answer";
 
-function CommentsContainer({ count, comments, exist, id, show, onCancel, onAnswer, onSend }) {
+function CommentsContainer({ count, comments, userId, exist, answerId, showAnswerForm, onCancel, onAnswer, onSend }) {
   const cn = bem("CommentContainer");
 
   return (
@@ -17,8 +17,9 @@ function CommentsContainer({ count, comments, exist, id, show, onCancel, onAnswe
           return (
             <Comment
               comment={comment}
+              userId={userId}
               key={comment._id}
-              answerId={id}
+              answerId={answerId}
               component={
                 <Answer exist={exist} onCancel={onCancel} type={"comment"} onSend={onSend}/>
               }
@@ -27,7 +28,7 @@ function CommentsContainer({ count, comments, exist, id, show, onCancel, onAnswe
           );
         })}
       </div>
-      <div>{show && <Answer exist={exist} onCancel={onCancel} onSend={onSend} />}</div>
+      <div>{showAnswerForm && <Answer exist={exist} onCancel={onCancel} onSend={onSend} />}</div>
     </div>
   );
 }

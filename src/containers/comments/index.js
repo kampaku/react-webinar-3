@@ -8,6 +8,7 @@ import CommentsContainer from '../../components/comments-container';
 import treeToList from '../../utils/tree-to-list';
 import listToTree from '../../utils/list-to-tree';
 import useSelector from "../../hooks/use-selector";
+import Spinner from '../../components/spinner';
 
 function Comments() {
   const dispatch = useDispatch();
@@ -23,6 +24,7 @@ function Comments() {
       comments: state.comments.comments,
       answerId: state.comments.answer.id,
       answerType: state.comments.answer.type,
+      waiting: state.comments.waiting
     }),
     shallowequal
   );
@@ -45,18 +47,21 @@ function Comments() {
   }
 
   return (
-    <CommentsContainer
-      count={select.comments.count}
-      comments={treeToList(listToTree(select.comments.items), (item, level) => {
-        return { ...item, level };
-      })}
-      exist={session.exists}
-      show={params.id === select.answerId}
-      id={select.answerId}
-      onCancel={callbacks.cancelAnswer}
-      onAnswer={callbacks.setAnswer}
-      onSend={callbacks.sendComment}
-    />
+    <Spinner active={select.waiting}>
+      <CommentsContainer
+        count={select.comments.count}
+        comments={treeToList(listToTree(select.comments.items), (item, level) => {
+          return { ...item, level };
+        })}
+        userId={session.userId}
+        exist={session.exists}
+        showAnswerForm={params.id === select.answerId}
+        answerId={select.answerId}
+        onCancel={callbacks.cancelAnswer}
+        onAnswer={callbacks.setAnswer}
+        onSend={callbacks.sendComment}
+      />
+    </Spinner>
   );
 }
 
