@@ -1,7 +1,7 @@
 import { memo, useCallback } from "react";
 import { useDispatch, useSelector as useSelectorRedux } from "react-redux";
 import shallowequal from "shallowequal";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import useInit from "../../hooks/use-init";
 import commentsActions from "../../store-redux/comments/actions";
 import CommentsContainer from '../../components/comments-container';
@@ -13,6 +13,7 @@ import Spinner from '../../components/spinner';
 function Comments() {
   const dispatch = useDispatch();
   const params = useParams();
+  const navigate = useNavigate();
 
   useInit(() => {
     dispatch(commentsActions.load(params.id));
@@ -37,10 +38,10 @@ function Comments() {
   const callbacks = {
     cancelAnswer: useCallback(() => {
       dispatch(commentsActions.setAnswer(params.id, 'article'))
-    }, []),
+    }, [params.id]),
     setAnswer: useCallback((id) => {
       dispatch(commentsActions.setAnswer(id, 'comment'))
-    }),
+    }, []),
     sendComment: useCallback((text) => {
       dispatch(commentsActions.sendComment(text, select.answerId, select.answerType))
     }, [select.answerId, select.answerType])
@@ -50,9 +51,7 @@ function Comments() {
     <Spinner active={select.waiting}>
       <CommentsContainer
         count={select.comments.count}
-        comments={treeToList(listToTree(select.comments.items), (item, level) => {
-          return { ...item, level };
-        })}
+        comments={listToTree(Object.values(select.comments.items), '_id', 'article')}
         userId={session.userId}
         exist={session.exists}
         showAnswerForm={params.id === select.answerId}

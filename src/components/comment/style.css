@@ -1,9 +1,9 @@
 .Comment {
-  display: flex;
   width: 100%;
 }
 
 .Comment-info {
+  padding: 15px 0;
   display: grid;
   width: 100%;
   gap: 10px;
@@ -37,6 +37,7 @@
   line-height: 16px;
   color: #000000;
   grid-area: text;
+  word-wrap: break-word;
 }
 
 .Comment-answer {
@@ -56,9 +57,15 @@
 }
 
 .Comment-branch {
+  height: 100%;
   width: 20px;
 }
 
 .Comment-wrapper {
   width: 100%;
+}
+
+.Comment-answers {
+  width: 100%;
+  display: flex;
 }

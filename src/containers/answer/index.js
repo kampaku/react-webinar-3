@@ -1,13 +1,16 @@
 import { memo } from 'react'
 import PropTypes from 'prop-types';
-import NoAnswer from '../no-answer'
-import AnswerForm from '../answer-form';
+import NoAnswer from '../../components/no-answer'
+import AnswerForm from '../../components/answer-form';
+import { useLocation } from 'react-router-dom';
 
 function Answer({exist, type, onCancel, onSend}) {
+  const location = useLocation();
+  
   if (exist) {
     return <AnswerForm onSend={onSend} onCancel={onCancel} type={type}/>
   } else {
-    return <NoAnswer type={type} onCancel={onCancel}/>
+    return <NoAnswer type={type} onCancel={onCancel} state={location.pathname}/>
   }
 }
 

@@ -6,7 +6,7 @@ import Comment from "../comment";
 import "./style.css";
 import Answer from "../../containers/answer";
 
-function CommentsContainer({ count, comments, userId, exist, answerId, showAnswerForm, onCancel, onAnswer, onSend }) {
+function CommentsContainer({ count, comments, exist, id, show, onCancel, onAnswer }) {
   const cn = bem("CommentContainer");
 
   return (
@@ -17,19 +17,17 @@ function CommentsContainer({ count, comments, userId, exist, answerId, showAnswe
           return (
             <Comment
               comment={comment}
-              userId={userId}
               key={comment._id}
-              answerId={answerId}
+              id={id}
               component={
-                <Answer exist={exist} onCancel={onCancel} type={"comment"} onSend={onSend}/>
+                <Answer exist={exist} onCancel={onCancel} type={"answer"} />
               }
               onAnswer={onAnswer}
-              answers={comment.children}
             />
           );
         })}
       </div>
-      <div>{showAnswerForm && <Answer exist={exist} onCancel={onCancel} onSend={onSend} />}</div>
+      <div>{show && <Answer exist={exist} onCancel={onCancel} />}</div>
     </div>
   );
 }
@@ -40,10 +38,12 @@ CommentsContainer.propTypes = {
   count: PropTypes.number,
   comments: PropTypes.array,
   exist: PropTypes.bool,
+  // t: PropTypes.func
 };
 
 CommentsContainer.defaultProps = {
   count: 0,
   comments: [],
   exist: false,
+  // t: (text) => text
 };

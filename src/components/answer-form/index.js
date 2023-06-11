@@ -12,7 +12,7 @@ function AnswerForm({ onSend, onCancel, type }) {
   if (type === "comment") title = "ответ";
 
   const sendHandler = () => {
-    if (value.length < 1) return;
+    if (value.length < 1 || /\s+/.test(value)) return;
     onSend(value);
     setValue('')
     onCancel()
@@ -23,7 +23,6 @@ function AnswerForm({ onSend, onCancel, type }) {
       <textarea
         onChange={({ target }) => setValue(target.value)}
         value={value}
-        placeholder="текст"
         className={cn("textarea")}
       />
       <div className={cn("controls")}>
