@@ -12,7 +12,7 @@ function AnswerForm({ onSend, onCancel, type }) {
   if (type === "comment") title = "ответ";
 
   const sendHandler = () => {
-    if (value.length < 1 || /\s+/.test(value)) return;
+    if (value.trim().length < 1) return;
     onSend(value);
     setValue('')
     onCancel()
